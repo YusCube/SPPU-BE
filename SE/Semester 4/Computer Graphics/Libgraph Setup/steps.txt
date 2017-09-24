@@ -1,0 +1,12 @@
+tar xf libgraph-1.0.2.tar.gz
+cd libgraph-1.0.2
+yum install SDL.x86_64 SDL-devel.x86_64 SDL_image.x86_64 SDL_image-devel.x86_64
+yum install guile guile.x86_64 guile.i686 guile-devel.x86_64 compat-guile18-devel.x86_64
+./configure
+yum install guile guile.x86_64 guile.i686 guile-devel.x86_64 compat-guile18-devel.x86_64
+./configure
+make
+make install
+make check
+sudo cp /usr/local/lib/libgraph.* /usr/lib
+ldconfig
