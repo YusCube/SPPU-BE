@@ -1,0 +1,83 @@
+mysql> select * from product_details;
++------------+--------------+----------+-------+
+| product_id | product_name | quantity | price |
++------------+--------------+----------+-------+
+|       5001 | pendrive     |      100 |   900 |
+|       5002 | Harddisk     |      200 |  3500 |
+|       5003 | Headphone    |     1000 |   600 |
+|       5004 | DVD          |       20 |  1500 |
+|       5005 | Speaker      |      600 |  1200 |
+|       5006 | headphone    |     1000 |   400 |
++------------+--------------+----------+-------+
+6 rows in set (0.04 sec)
+
+mysql> select * from sales_details;
++---------+------------+----------+-------+---------------+
+| sale_no | product_id | quantity | price | customer_name |
++---------+------------+----------+-------+---------------+
+|    2001 |       5001 |       50 |   900 | Savani        |
+|    2002 |       5004 |       10 |  1500 | Savani        |
+|    2003 |       5003 |      120 |   600 | Deepak        |
+|    2004 |       5005 |      420 |  1200 | Harsh         |
+|    2005 |       5002 |       40 |  3500 | Akash         |
++---------+------------+----------+-------+---------------+
+5 rows in set (0.00 sec)
+
+mysql>
+
+
+
+Inner Join
+
+mysql> select product_details.product_id,product_name ,sales_details.customer_na
+me ,product_details.quantity,product_details.price from product_details INNER JO
+IN sales_details on product_details.product_id=sales_details.product_id;
++------------+--------------+---------------+----------+-------+
+| product_id | product_name | customer_name | quantity | price |
++------------+--------------+---------------+----------+-------+
+|       5001 | pendrive     | Savani        |      100 |   900 |
+|       5002 | Harddisk     | Akash         |      200 |  3500 |
+|       5003 | Headphone    | Deepak        |     1000 |   600 |
+|       5004 | DVD          | Savani        |       20 |  1500 |
+|       5005 | Speaker      | Harsh         |      600 |  1200 |
++------------+--------------+---------------+----------+-------+
+5 rows in set (0.00 sec)
+
+
+LEFT OUTER JOIN
+
+mysql> select product_details.product_id,product_name ,sales_details.customer_na
+me ,product_details.quantity,product_details.price from product_details LEFT OUT
+ER JOIN sales_details on product_details.product_id=sales_details.product_id;
++------------+--------------+---------------+----------+-------+
+| product_id | product_name | customer_name | quantity | price |
++------------+--------------+---------------+----------+-------+
+|       5001 | pendrive     | Savani        |      100 |   900 |
+|       5004 | DVD          | Savani        |       20 |  1500 |
+|       5003 | Headphone    | Deepak        |     1000 |   600 |
+|       5005 | Speaker      | Harsh         |      600 |  1200 |
+|       5002 | Harddisk     | Akash         |      200 |  3500 |
+|       5006 | headphone    | NULL          |     1000 |   400 |
++------------+--------------+---------------+----------+-------+
+6 rows in set (0.00 sec)
+
+mysql>
+
+
+RIGHT OUTER JOIN
+mysql> select product_details.product_id,product_name ,sales_details.customer_na
+me ,product_details.quantity,product_details.price from product_details RIGHT OU
+TER JOIN sales_details on product_details.product_id=sales_details.product_id;
++------------+--------------+---------------+----------+-------+
+| product_id | product_name | customer_name | quantity | price |
++------------+--------------+---------------+----------+-------+
+|       5001 | pendrive     | Savani        |      100 |   900 |
+|       5002 | Harddisk     | Akash         |      200 |  3500 |
+|       5003 | Headphone    | Deepak        |     1000 |   600 |
+|       5004 | DVD          | Savani        |       20 |  1500 |
+|       5005 | Speaker      | Harsh         |      600 |  1200 |
++------------+--------------+---------------+----------+-------+
+5 rows in set (0.00 sec)
+
+mysql>
+

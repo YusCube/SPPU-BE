@@ -1,0 +1,122 @@
+[students@localhost ~]$ mongo
+MongoDB shell version: 2.6.12
+connecting to: test
+> use mongo
+switched to db mongo
+> db.employee.insert({'custID':'A123','Amount':500,'status':'A'})
+WriteResult({ "nInserted" : 1 })
+> db.employee.insert({'custID':'A123','Amount':250,'status':'A'})
+WriteResult({ "nInserted" : 1 })
+> db.employee.insert({'custID':'B212','Amount':200,'status':'A'})
+WriteResult({ "nInserted" : 1 })
+> db.employee.insert({'custID':'A123','Amount':300,'status':'D'})
+WriteResult({ "nInserted" : 1 })
+> db.employee.find().pretty()
+{
+	"_id" : ObjectId("59b8d7d5f2bf70af64bf60e4"),
+	"custID" : "A123",
+	"Amount" : 500,
+	"status" : "A"
+}
+{
+	"_id" : ObjectId("59b8d7e1f2bf70af64bf60e5"),
+	"custID" : "A123",
+	"Amount" : 250,
+	"status" : "A"
+}
+{
+	"_id" : ObjectId("59b8d82bf2bf70af64bf60e6"),
+	"custID" : "B212",
+	"Amount" : 200,
+	"status" : "A"
+}
+{
+	"_id" : ObjectId("59b8d83af2bf70af64bf60e7"),
+	"custID" : "A123",
+	"Amount" : 300,
+	"status" : "D"
+}
+> db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$sum:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 750 }
+> db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$min:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 250 }
+> db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$max:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 500 }
+> db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$status','totalAmount':{$sum:'$Amount'}}}])
+{ "_id" : "A", "totalAmount" : 950 }
+> db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$avg:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 375 }
+> db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$avg:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 375 }
+> db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$first:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 500 }
+> db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$last:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 250 }
+> db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$push:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : [ 200 ] }
+{ "_id" : "A123", "totalAmount" : [ 500, 250 ] }
+> db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$sum:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 1050 }
+>  db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$avg:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 350 }
+> db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$min:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 250 }
+> db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$max:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 500 }
+> db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$first:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 500 }
+> db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$last:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 300 }
+> db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$push:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : [ 200 ] }
+{ "_id" : "A123", "totalAmount" : [ 500, 250, 300 ] }
+> db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$sum:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 550 }
+> db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$avg:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 275 }
+> db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$max:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 300 }
+> db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$min:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 250 }
+> db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$push:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : [ 200 ] }
+{ "_id" : "A123", "totalAmount" : [ 250, 300 ] }
+> db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$first:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 250 }
+> db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$last:'$Amount'}}}])
+{ "_id" : "B212", "totalAmount" : 200 }
+{ "_id" : "A123", "totalAmount" : 300 }
+> db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$sum:'$Amount'}}}])
+{ "_id" : "A123", "totalAmount" : 750 }
+> db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$avg:'$Amount'}}}])
+{ "_id" : "A123", "totalAmount" : 375 }
+> db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$min:'$Amount'}}}])
+{ "_id" : "A123", "totalAmount" : 250 }
+>  db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$max:'$Amount'}}}])
+{ "_id" : "A123", "totalAmount" : 500 }
+> db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$first:'$Amount'}}}])
+{ "_id" : "A123", "totalAmount" : 500 }
+> db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$last:'$Amount'}}}])
+{ "_id" : "A123", "totalAmount" : 250 }
+> db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$push:'$Amount'}}}])
+{ "_id" : "A123", "totalAmount" : [ 500, 250 ] }
+> 
+

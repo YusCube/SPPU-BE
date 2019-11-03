@@ -1,0 +1,449 @@
+mysql> create table Employee(emp_no int,emp_name varchar(10),joining_date date,salray int);
+Query OK, 0 rows affected (0.48 sec)
+
+1)	Insert 5 record into Employee Table
+
+mysql> insert into Employee values(101,'Rajesh','1995-11-02',12000);
+Query OK, 1 row affected (0.12 sec)
+
+
+mysql> insert into Employee values(102,'Swati','2015-01-07',20000);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into Employee values(103,'Vedant','1999-05-03',30000);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into Employee values(104,'Vedika','2005-02-10',52000);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into Employee values(105,'Ankita','2006-02-11',8000);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into Employee values(106,'Ankur','2017-03-15',6000);
+Query OK, 1 row affected (0.05 sec)
+
+mysql>
+
+2)	Retrieve all the record from Table Employee
+
+mysql> select * from Employee;
++--------+----------+--------------+-------+
+| emp_no | emp_name | joining_date | salary |
++--------+----------+--------------+-------+
+|    101 | Rajesh   | 1995-11-02   | 12000 |
+|    102 | Swati    | 2015-01-07   | 20000 |
+|    103 | Vedant   | 1999-05-03   | 30000 |
+|    104 | Vedika   | 2005-02-10   | 52000 |
+|    105 | Ankita   | 2006-02-11   |  8000 |
+|    106 | Ankur    | 2017-03-15   |  6000 |
++--------+----------+--------------+-------+
+6 rows in set (0.06 sec)
+
+
+3)	Retrieve all records from  column emp_no and emp_name only
+mysql> select emp_no ,emp_name from Employee;
++--------+----------+
+| emp_no | emp_name |
++--------+----------+
+|    101 | Rajesh   |
+|    102 | Swati    |
+|    103 | Vedant   |
+|    104 | Vedika   |
+|    105 | Ankita   |
+|    106 | Ankur    |
++--------+----------+
+6 rows in set (0.00 sec)
+
+4)	Retrieve the salary from Employee where salary >8000;
+
+mysql> select * from Employee where salary>8000;
++--------+----------+--------------+--------+
+| emp_no | emp_name | joining_date | salary |
++--------+----------+--------------+--------+
+|    101 | Rajesh   | 1995-11-02   |  12000 |
+|    102 | Swati    | 2015-01-07   |  20000 |
+|    103 | Vedant   | 1999-05-03   |  30000 |
+|    104 | Vedika   | 2005-02-10   |  52000 |
++--------+----------+--------------+--------+
+4 rows in set (0.02 sec)
+
+5)	Retrieve the salary using distinct clause from Employee
+
+mysql> select distinct(salary) from Employee;
++--------+
+| salary |
++--------+
+|  12000 |
+|  20000 |
+|  30000 |
+|  52000 |
+|   8000 |
+|   6000 |
++--------+
+6 rows in set (0.06 sec)
+
+6)	Update the Salary to 50000 of Employee whose emp_no =101
+mysql> update Employee set salary=50000 where emp_no=101;
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Employee;
++--------+----------+--------------+--------+
+| emp_no | emp_name | joining_date | salary |
++--------+----------+--------------+--------+
+|    101 | Rajesh   | 1995-11-02   |  50000 |
+|    102 | Swati    | 2015-01-07   |  20000 |
+|    103 | Vedant   | 1999-05-03   |  30000 |
+|    104 | Vedika   | 2005-02-10   |  52000 |
+|    105 | Ankita   | 2006-02-11   |   8000 |
+|    106 | Ankur    | 2017-03-15   |   6000 |
++--------+----------+--------------+--------+
+6 rows in set (0.00 sec)
+
+7)	Delete the Employee record from table whose emp_no =106
+
+mysql> delete from Employee where emp_no =106;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from Employee;
++--------+----------+--------------+--------+
+| emp_no | emp_name | joining_date | salary |
++--------+----------+--------------+--------+
+|    101 | Rajesh   | 1995-11-02   |  50000 |
+|    102 | Swati    | 2015-01-07   |  20000 |
+|    103 | Vedant   | 1999-05-03   |  30000 |
+|    104 | Vedika   | 2005-02-10   |  52000 |
+|    105 | Ankita   | 2006-02-11   |   8000 |
++--------+----------+--------------+--------+
+5 rows in set (0.00 sec)
+
+8)	Retrieve the records of Employee whose salary is in between 8000 to 30000
+
+mysql> select * from Employee where salary between 8000 and 30000;
++--------+----------+--------------+--------+
+| emp_no | emp_name | joining_date | salary |
++--------+----------+--------------+--------+
+|    102 | Swati    | 2015-01-07   |  20000 |
+|    103 | Vedant   | 1999-05-03   |  30000 |
+|    105 | Ankita   | 2006-02-11   |   8000 |
++--------+----------+--------------+--------+
+3 rows in set (0.00 sec)
+
+
+9)	Retrieve the records of Employee whose salary is 8000 and         30000
+mysql> select * from Employee where salary in(8000,30000);
++--------+----------+--------------+--------+
+| emp_no | emp_name | joining_date | salary |
++--------+----------+--------------+--------+
+|    103 | Vedant   | 1999-05-03   |  30000 |
+|    105 | Ankita   | 2006-02-11   |   8000 |
++--------+----------+--------------+--------+
+2 rows in set (0.01 sec)
+10)	Display the records of Employee who join in 2015
+
+mysql> select * from Employee where joining_date Like '2015%';
++--------+----------+--------------+--------+
+| emp_no | emp_name | joining_date | salary |
++--------+----------+--------------+--------+
+|    102 | Swati    | 2015-01-07   |  20000 |
++--------+----------+--------------+--------+
+1 row in set, 1 warning (0.10 sec)
+
+
+11)	Retrieve the minium salary of Employee
+mysql> select MIN(salary) from Employee;
++-------------+
+| MIN(salary) |
++-------------+
+|        8000 |
++-------------+
+1 row in set (0.10 sec)
+
+12)	Retrieve the highest salary of the Employee
+
+mysql> select MAX(salary) from Employee;
++-------------+
+| MAX(salary) |
++-------------+
+|       52000 |
++-------------+
+1 row in set (0.00 sec)
+
+13)	Retrieve the count of Employee who join in 2015
+mysql> select count(Emp_no) from Employee where joining_date like         '1999%';
++---------------+
+| count(Emp_no) |
++---------------+
+|             1 |
++---------------+
+1 row in set, 1 warning (0.02 sec)
+
+14)	Find the total salary amount paid to the employee
+
+
+mysql> select sum(salary) from Employee;
++-------------+
+| sum(salary) |
++-------------+
+|      160000 |
++-------------+
+1 row in set (0.07 sec)
+
+15)	Display  only joining year of the employee
+
+
+mysql> select MID(joining_date,1,4) from Employee;
++-----------------------+
+| MID(joining_date,1,4) |
++-----------------------+
+| 1995                  |
+| 2015                  |
+| 1999                  |
+| 2005                  |
+| 2006                  |
++-----------------------+
+5 rows in set (0.02 sec)
+
+mysql> create table product_details(product_id int,product_name varchar(10),quantity int,price int);
+Query OK, 0 rows affected (0.39 sec)
+
+mysql> insert into product_details values(5001,'pendrive',100,900);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into product_details values(5002,'Harddisk',200,3500);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into product_details values(5003,'Headphone',1000,600);
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into product_details values(5004,'DVD',20,1500);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into product_details values(5005,'Speaker',600,1200);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into product_details values(5006,'headphone',1000,400);
+Query OK, 1 row affected (0.10 sec)
+mysql> select * from product_details;
++------------+--------------+----------+-------+
+| product_id | product_name | quantity | price |
++------------+--------------+----------+-------+
+|       5001 | pendrive     |      100 |   900 |
+|       5002 | Harddisk     |      200 |  3500 |
+|       5003 | Headphone    |     1000 |   600 |
+|       5004 | DVD          |       20 |  1500 |
+|       5005 | Speaker      |      600 |  1200 |
+|       5006 | headphone    |     1000 |   400 |
++------------+--------------+----------+-------+
+6 rows in set (0.01 sec)
+
+mysql> create table sales_details(sale_no int,product_id int,quantity int,price int,customer_name varchar(10));
+Query OK, 0 rows affected (0.27 sec)
+
+
+
+mysql> insert into sales_details values(2001,5001,50,900,'Savani');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into sales_details values(2002,5004,10,1500,'Savani');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into sales_details values(2003,5003,120,600,'Deepak');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into sales_details values(2004,5005,420,1200,'Harsh');
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into sales_details values(2005,5002,40,3500,'Akash');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> select * from sales_details;
++---------+------------+----------+-------+---------------+
+| sale_no | product_id | quantity | price | customer_name |
++---------+------------+----------+-------+---------------+
+|    2001 |       5001 |       50 |   900 | Savani        |
+|    2002 |       5004 |       10 |  1500 | Savani        |
+|    2003 |       5003 |      120 |   600 | Deepak        |
+|    2004 |       5005 |      420 |  1200 | Harsh         |
+|    2005 |       5002 |       40 |  3500 | Akash         |
++---------+------------+----------+-------+---------------+
+5 rows in set (0.00 sec)
+
+
+16)	Retrieve the ids of all  product even if they were sold or         present in the storage room(use union  
+        Operator)
+mysql> select product_id from product_details union select product_id from sales
+_details;
++------------+
+| product_id |
++------------+
+|       5001 |
+|       5002 |
+|       5003 |
+|       5004 |
+|       5005 |
+|       5006 |
++------------+
+6 rows in set (0.00 sec)
+
+17)	Retrieve the ids of all the sold product even if they were         sold or present in the storage room(use union all operator)
+
+
+mysql> select product_id from product_details union all select        product_id from sales_details;
++------------+
+| product_id |
++------------+
+|       5001 |
+|       5002 |
+|       5003 |
+|       5004 |
+|       5005 |
+|       5006 |
+|       5001 |
+|       5004 |
+|       5003 |
+|       5005 |
+|       5002 |
++------------+
+11 rows in set (0.00 sec)
+
+18)	Retrieve all the ids of all the sold products(use interest operator)
+
+SQL> create table sales_details(sale_no int,product_id int,quantity int,price
+t,customer_name varchar(10));
+
+Table created.
+
+SQL> insert into sales_details values(2001,5001,50,900,'Savani');
+
+1 row created.
+
+SQL> insert into sales_details values(2002,5004,10,1500,'Savani');
+
+1 row created.
+
+SQL> insert into sales_details values(2003,5003,120,600,'Deepak');
+
+1 row created.
+
+SQL> insert into sales_details values(2004,5005,420,1200,'Harsh');
+
+1 row created.
+
+SQL> insert into sales_details values(2005,5002,40,3500,'Akash');
+
+1 row created.
+
+SQL> select * from sales_details;
+
+   SALE_NO PRODUCT_ID   QUANTITY      PRICE CUSTOMER_N
+---------- ---------- ---------- ---------- ----------
+      2001       5001         50        900 Savani
+      2002       5004         10       1500 Savani
+      2003       5003        120        600 Deepak
+      2004       5005        420       1200 Harsh
+      2005       5002         40       3500 Akash
+
+SQL> create table product_details(product_id int,product_name varchar(10),quan
+ty int,price int);
+
+Table created.
+
+SQL> insert into product_details values(5001,'pendrive',100,900);
+
+1 row created.
+
+SQL> insert into product_details values(5002,'Harddisk',200,3500);
+
+1 row created.
+
+SQL> insert into product_details values(5003,'Headphone',1000,600);
+
+1 row created.
+
+SQL> insert into product_details values(5004,'DVD',20,1500);
+
+1 row created.
+
+SQL> insert into product_details values(5005,'Speaker',600,1200);
+
+1 row created.
+
+SQL> select * from product_details;
+
+PRODUCT_ID PRODUCT_NA   QUANTITY      PRICE
+---------- ---------- ---------- ----------
+      5001 pendrive          100        900
+      5002 Harddisk          200       3500
+      5003 Headphone        1000        600
+      5004 DVD                20       1500
+      5005 Speaker           600       1200
+
+SQL> select product_id from product_details intersect select product_id from saes_details;
+
+PRODUCT_ID
+----------
+      5001
+      5002
+      5003
+      5004
+      5005
+
+SQL> select *from product_details;
+
+PRODUCT_ID PRODUCT_NA   QUANTITY      PRICE
+---------- ---------- ---------- ----------
+      5001 pendrive          100        900
+      5002 Harddisk          200       3500
+      5003 Headphone        1000        600
+      5004 DVD                20       1500
+      5005 Speaker           600       1200
+
+SQL> select *from sales_details;
+
+   SALE_NO PRODUCT_ID   QUANTITY      PRICE CUSTOMER_N
+---------- ---------- ---------- ---------- ----------
+      2001       5001         50        900 Savani
+      2002       5004         10       1500 Savani
+      2003       5003        120        600 Deepak
+      2004       5005        420       1200 Harsh
+
+
+
+SQL> delete from sales_details where sale_no=2005;
+
+1 row deleted.
+SQL> select *from product_details;
+
+PRODUCT_ID PRODUCT_NA   QUANTITY      PRICE
+---------- ---------- ---------- ----------
+      5001 pendrive          100        900
+      5002 Harddisk          200       3500
+      5003 Headphone        1000        600
+      5004 DVD                20       1500
+      5005 Speaker           600       1200
+
+SQL> select *from sales_details;
+
+   SALE_NO PRODUCT_ID   QUANTITY      PRICE CUSTOMER_N
+---------- ---------- ---------- ---------- ----------
+      2001       5001         50        900 Savani
+      2002       5004         10       1500 Savani
+      2003       5003        120        600 Deepak
+      2004       5005        420       1200 Harsh
+
+
+SQL> select product_id from product_details minus select product_id from sales_d
+etails;
+
+PRODUCT_ID
+----------
+      5002
+
+SQL>
+
+
+
+
+
+

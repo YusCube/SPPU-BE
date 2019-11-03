@@ -1,0 +1,45 @@
+[students@localhost ~]$ mongo
+MongoDB shell version: 2.6.12
+connecting to: test
+> db.employee.ensureIndex({'cust_id':1,'amount':1})
+{
+	"createdCollectionAutomatically" : true,
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"ok" : 1
+}
+> db.employee.getIndexes()
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "test.employee"
+	},
+	{
+		"v" : 1,
+		"key" : {
+			"cust_id" : 1,
+			"amount" : 1
+		},
+		"name" : "cust_id_1_amount_1",
+		"ns" : "test.employee"
+	}
+]
+> db.employee.dropIndex({'cust_id':1,'amount':1})
+{ "nIndexesWas" : 2, "ok" : 1 }
+> db.employee.getIndexes()
+[
+	{
+		"v" : 1,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "test.employee"
+	}
+]
+> 
+

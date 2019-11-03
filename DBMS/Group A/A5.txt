@@ -1,0 +1,62 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Fri Sep 1 10:56:14 2017
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+Use "connect username/password@XE" to connect to the database.
+SQL> connect system/system
+Connected.
+SQL> create table borrower(roll_no number(5),name varchar2(20),DateofIssue date,NameofBook varchar2(20),status varchar2(20));
+
+Table created.
+
+SQL> insert into borrower values(1,'Rahul','01-Apr-2017','DBMS','I');
+
+1 row created.
+
+SQL> insert into borrower values(2,'Palak','05-Apr-2017','JAVA','I');
+
+1 row created.
+
+SQL> insert into borrower values(3,'Aniket','10-Apr-2017','OS','I');
+
+1 row created.
+
+SQL> select * from borrower;
+
+   ROLL_NO NAME 		DATEOFISSUE	   NAMEOFBOOK
+---------- -------------------- ------------------ --------------------
+STATUS
+--------------------
+	 1 Rahul		01-APR-17	   DBMS
+I
+
+	 2 Palak		05-APR-17	   JAVA
+I
+
+	 3 Aniket		10-APR-17	   OS
+I
+
+
+SQL> create table fine(roll_no integer,date1 date,amt float);
+
+Table created.
+
+SQL> @5
+Enter value for roll_number: 1
+old   2:     rno number(3):=&roll_number;
+new   2:     rno number(3):=1;
+Enter value for book_name: DBMS
+old   3:     bname varchar2(20):='&book_name';
+new   3:     bname varchar2(20):='DBMS';
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from fine;
+
+   ROLL_NO DATE1		     AMT
+---------- ------------------ ----------
+	 1 01-SEP-17		    7650
+
+SQL> 
+

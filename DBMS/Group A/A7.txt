@@ -1,0 +1,44 @@
+create table stud_marks(name varchar2(20),total_marks number(5));
+
+Table created.
+
+SQL> create table result(roll number(3),name varchar2(20),class varchar2(20));
+
+Table created.
+
+SQL> create or replace procedure proc_Grade(rno number,name varchar2,marks number)
+  2  is
+  3  class varchar2(20);
+  4  begin 
+  5  if(marks<=1500 and marks>=990) then
+  6  class:='Distinction';
+  7  elsif(marks<=989 and marks>=900) then
+  8  class:='First';
+  9  elsif(marks<=899 and marks>=825) then
+ 10  class:='Higher Second';
+ 11  end if;
+ 12  insert into stud_marks values(name,marks);
+ 13  insert into result values(rno,name,class);
+ 14  end;
+ 15  /
+
+Procedure created.
+
+SQL> exec proc_Grade(1,'Sam',1000);
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from stud_marks;
+
+NAME		     TOTAL_MARKS
+-------------------- -----------
+Sam			    1000
+
+SQL> select * from result;
+
+      ROLL NAME 		CLASS
+---------- -------------------- --------------------
+	 1 Sam			Distinction
+
+SQL> 
+

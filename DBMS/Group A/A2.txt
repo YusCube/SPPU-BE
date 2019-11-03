@@ -1,0 +1,176 @@
+
+//Create Table
+
+
+
+mysql> use dbms;
+Database changed
+mysql> create table Employee(
+    ->     employee_no INT NOT NULL AUTO_INCREMENT,
+    ->     employee_name varchar(10) NOT NULL,
+    ->     joining_date DATE,
+    ->     salary INT,
+    ->     PRIMARY KEY(employee_no)
+    ->     );
+Query OK, 0 rows affected (0.34 sec)
+
+
+
+
+1)Creating Table from Existing Table
+
+
+mysql> Create table newEmployee1 as select * from Employee;
+Query OK, 0 rows affected (0.37 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+
+2)Creating Table having specific field but all the records from existing table
+
+mysql> Create table newEmployee2  as select Employee_no,Employee_name from Employee;
+Query OK, 0 rows affected (0.30 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+B)Modifying Table
+
+1)Adding new column in a table
+
+mysql> Create table Employee1(Employee_no  integer(3),
+    ->  Employee_name varchar(20),
+    -> joining_date date,
+    -> Salary integer(6));
+Query OK, 0 rows affected (0.35 sec)
+mysql> ALTER TABLE Employee1 ADD Department varchar(15);
+Query OK, 0 rows affected (0.41 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+2)Dropping column from table
+
+ALTER TABLE Employee1 DROP column Department;
+Query OK, 0 rows affected (0.50 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+3)Modifying  Column of a table
+
+mysql> ALTER TABLE Employee1 MODIFY COLUMN Employee_no varchar(4);
+Query OK, 0 rows affected (0.89 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+4)Renaming Table
+mysql> Rename table Employee1 to Emptable;
+Query OK, 0 rows affected (0.38 sec)
+
+5)Drop Table (User to delete the table)
+
+mysql> drop table Emptable;
+Query OK, 0 rows affected (0.20 sec)
+
+
+
+Creating view
+
+mysql> create table Employee2(Employee_no int,Employee_name varchar(10),joining_
+date date,salary int);
+Query OK, 0 rows affected (0.31 sec)
+
+
+mysql> Create or replace view Emp_view1 as select * from Employee2;
+Query OK, 0 rows affected (0.06 sec)
+
+
+Updating View
+mysql> insert into Emp_view1 values(101,'gajanan','2017-01-06',45000);
+Query OK, 1 row affected (0.14 sec)
+mysql> select * from Emp_view1;
++-------------+---------------+--------------+--------+
+| Employee_no | Employee_name | joining_date | salary |
++-------------+---------------+--------------+--------+
+|         101 | gajanan       | 2017-01-06   |  45000 |
++-------------+---------------+--------------+--------+
+1 row in set (0.00 sec)
+
+
+mysql> UPDATE Emp_view1 set Salary=73000 where Employee_no=101;
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Emp_view1;
++-------------+---------------+--------------+--------+
+| Employee_no | Employee_name | joining_date | salary |
++-------------+---------------+--------------+--------+
+|         101 | gajanan       | 2017-01-06   |  73000 |
++-------------+---------------+--------------+--------+
+1 row in set (0.00 sec)
+
+
+Creating Index
+mysql> create table emp(empno int,name varchar(7),salary int);
+Query OK, 0 rows affected (0.32 sec)
+
+mysql> insert into emp values(101,'gajanan',45000);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into emp values(1,'gajanan1',65000);
+ERROR 1406 (22001): Data too long for column 'name' at row 1
+mysql> insert into emp values(1,'gaju1',65000);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into emp values(1011,'gaju2',3300);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> CREATE INDEX emp1_ind1 on emp(empno);
+Query OK, 0 rows affected (0.38 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show index from emp;
++-------+------------+-----------+--------------+-------------+-----------+-----
+--------+----------+--------+------+------------+---------+---------------+
+| Table | Non_unique | Key_name  | Seq_in_index | Column_name | Collation | Card
+inality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-------+------------+-----------+--------------+-------------+-----------+-----
+--------+----------+--------+------+------------+---------+---------------+
+| emp   |          1 | emp1_ind1 |            1 | empno       | A         |
+      3 |     NULL | NULL   | YES  | BTREE      |         |               |
++-------+------------+-----------+--------------+-------------+-----------+-----
+--------+----------+--------+------+------------+---------+---------------+
+1 row in set (0.00 sec)
+
+
+mysql>
+
+
+
+
+Creating Sequence
+
+mysql> Create table emp2(empno int auto_increment,ename varchar(10),sal int, primary key(empno));
+Query OK, 0 rows affected (0.27 sec)
+mysql> insert into emp2 values(1,'gajanan',20000);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into emp2 values(default,'gajanan',20000);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into emp2 values(default,'gajanan',20000);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from emp2;
++-------+---------+-------+
+| empno | ename   | sal   |
++-------+---------+-------+
+|     1 | gajanan | 20000 |
+|     2 | gajanan | 20000 |
+|     3 | gajanan | 20000 |
++-------+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql>
+
+
+
+
+
+
+

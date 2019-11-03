@@ -1,0 +1,199 @@
+[students@localhost ~]$ mongo
+MongoDB shell version: 2.6.12
+connecting to: test
+Welcome to the MongoDB shell.
+For interactive help, type "help".
+For more comprehensive documentation, see
+	http://docs.mongodb.org/
+Questions? Try the support group
+	http://groups.google.com/group/mongodb-user
+> use emplooye
+switched to db emplooye
+> db.bank7.insert({'custid':'c002','custname':'Aniket','branchname':'AXIS','blance':4000,'loction':'LKO'})
+WriteResult({ "nInserted" : 1 })
+> db.bank7.find().pretty
+function (){
+    this._prettyShell = true;
+    return this;
+}
+> db.bank7.find().pretty()
+{
+	"_id" : ObjectId("59b8d0ebab6f1eab19e32f43"),
+	"custid" : "c002",
+	"custname" : "Aniket",
+	"branchname" : "AXIS",
+	"blance" : 4000,
+	"loction" : "LKO"
+}
+> db.bank8.insert({'custid':'c001','custname':'Sanika','branchname':'SBI','blance':3000,'loction':'LKO'})
+WriteResult({ "nInserted" : 1 })
+> db.bank8.insert({'custid':'c002','custname':'Aniket','branchname':'AXIS','blance':4000,'loction':'LKO'})
+WriteResult({ "nInserted" : 1 })
+> db.bank8.insert({'custid':'c002','custname':'Sanika','branchname':'AXIS','blance':5000,'loction':'Charholi'})
+WriteResult({ "nInserted" : 1 })
+> db.bank8.insert({'custid':'c003','custname':'Sanika','branchname':'AXIS','blance':5000,'loction':'Charholi'})
+WriteResult({ "nInserted" : 1 })
+> db.bank8.insert({'custid':'c004','custname':'Anand','branchname':'AXIS','blance':6000,'loction':'pune'})
+WriteResult({ "nInserted" : 1 })
+> db.bank8.insert({'custid':'c005','custname':'Sania','branchname':'HDFC','blance':7000,'loction':'pune'})
+WriteResult({ "nInserted" : 1 })
+> db.bank8.insert({'custid':'c006','custname':'Sarvesh','branchname':'HDFC','blance':8000,'loction':'LKO'})
+WriteResult({ "nInserted" : 1 })
+> db.bank8.find().pretty()
+{
+	"_id" : ObjectId("59b8d29aab6f1eab19e32f44"),
+	"custid" : "c001",
+	"custname" : "Sanika",
+	"branchname" : "SBI",
+	"blance" : 3000,
+	"loction" : "LKO"
+}
+{
+	"_id" : ObjectId("59b8d2a7ab6f1eab19e32f45"),
+	"custid" : "c002",
+	"custname" : "Aniket",
+	"branchname" : "AXIS",
+	"blance" : 4000,
+	"loction" : "LKO"
+}
+{
+	"_id" : ObjectId("59b8d2b7ab6f1eab19e32f46"),
+	"custid" : "c002",
+	"custname" : "Sanika",
+	"branchname" : "AXIS",
+	"blance" : 5000,
+	"loction" : "Charholi"
+}
+{
+	"_id" : ObjectId("59b8d2ceab6f1eab19e32f47"),
+	"custid" : "c003",
+	"custname" : "Sanika",
+	"branchname" : "AXIS",
+	"blance" : 5000,
+	"loction" : "Charholi"
+}
+{
+	"_id" : ObjectId("59b8d2daab6f1eab19e32f48"),
+	"custid" : "c004",
+	"custname" : "Anand",
+	"branchname" : "AXIS",
+	"blance" : 6000,
+	"loction" : "pune"
+}
+{
+	"_id" : ObjectId("59b8d2e7ab6f1eab19e32f49"),
+	"custid" : "c005",
+	"custname" : "Sania",
+	"branchname" : "HDFC",
+	"blance" : 7000,
+	"loction" : "pune"
+}
+{
+	"_id" : ObjectId("59b8d2fbab6f1eab19e32f4a"),
+	"custid" : "c006",
+	"custname" : "Sarvesh",
+	"branchname" : "HDFC",
+	"blance" : 8000,
+	"loction" : "LKO"
+}
+> var mapReduce=function(){emit(this.bankname,this.blance)}
+> var reducefunction=function(key,value){return array.sum(value)}
+> var Mapfunction=function(){emit(this.bankname,this.blance)}
+> var reducefunction=function(key,value){return array.sum(value)}
+> var reducefunction=function(key,values){return Array.sum(values)}
+> db.bank8.mapReduce(Mapfunction,reducefunction,{'out':'bankMRE'})
+{
+	"result" : "bankMRE",
+	"timeMillis" : 212,
+	"counts" : {
+		"input" : 7,
+		"emit" : 7,
+		"reduce" : 1,
+		"output" : 1
+	},
+	"ok" : 1
+}
+> db.bankMRE.find()
+{ "_id" : null, "value" : 38000 }
+> db.bank8.find().pretty()
+{
+	"_id" : ObjectId("59b8d29aab6f1eab19e32f44"),
+	"custid" : "c001",
+	"custname" : "Sanika",
+	"branchname" : "SBI",
+	"blance" : 3000,
+	"loction" : "LKO"
+}
+{
+	"_id" : ObjectId("59b8d2a7ab6f1eab19e32f45"),
+	"custid" : "c002",
+	"custname" : "Aniket",
+	"branchname" : "AXIS",
+	"blance" : 4000,
+	"loction" : "LKO"
+}
+{
+	"_id" : ObjectId("59b8d2b7ab6f1eab19e32f46"),
+	"custid" : "c002",
+	"custname" : "Sanika",
+	"branchname" : "AXIS",
+	"blance" : 5000,
+	"loction" : "Charholi"
+}
+{
+	"_id" : ObjectId("59b8d2ceab6f1eab19e32f47"),
+	"custid" : "c003",
+	"custname" : "Sanika",
+	"branchname" : "AXIS",
+	"blance" : 5000,
+	"loction" : "Charholi"
+}
+{
+	"_id" : ObjectId("59b8d2daab6f1eab19e32f48"),
+	"custid" : "c004",
+	"custname" : "Anand",
+	"branchname" : "AXIS",
+	"blance" : 6000,
+	"loction" : "pune"
+}
+{
+	"_id" : ObjectId("59b8d2e7ab6f1eab19e32f49"),
+	"custid" : "c005",
+	"custname" : "Sania",
+	"branchname" : "HDFC",
+	"blance" : 7000,
+	"loction" : "pune"
+}
+{
+	"_id" : ObjectId("59b8d2fbab6f1eab19e32f4a"),
+	"custid" : "c006",
+	"custname" : "Sarvesh",
+	"branchname" : "HDFC",
+	"blance" : 8000,
+	"loction" : "LKO"
+}
+> var Mapfunction=function(){emit(this.branchname,this.blance)}
+> var reducefunction=function(key,values){return Array.sum(values)}
+> db.bank8.mapReduce(Mapfunction,reducefunction,{'out':'bankMRE'})
+{
+	"result" : "bankMRE",
+	"timeMillis" : 4,
+	"counts" : {
+		"input" : 7,
+		"emit" : 7,
+		"reduce" : 2,
+		"output" : 3
+	},
+	"ok" : 1
+}
+> db.bankMRE.find()
+{ "_id" : "AXIS", "value" : 20000 }
+{ "_id" : "HDFC", "value" : 15000 }
+{ "_id" : "SBI", "value" : 3000 }
+> db.bankMRE.find({'_id':'HDFC'})
+{ "_id" : "HDFC", "value" : 15000 }
+> db.bankMRE.find({'_id':'SBI'})
+{ "_id" : "SBI", "value" : 3000 }
+> db.bankMRE.find({'_id':'AXIS'})
+{ "_id" : "AXIS", "value" : 20000 }
+> 

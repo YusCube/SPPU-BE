@@ -1,0 +1,208 @@
+SQL*Plus: Release 11.2.0.2.0 Production on Thu Aug 31 10:30:52 2017
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+Use "connect username/password@XE" to connect to the database.
+SQL> CONNECT
+Enter user-name: system
+Enter password: 
+Connected.
+SQL> create table rcall(roll_no number(10),name char(10),ATT_date date,attendance char(20));
+
+Table created.
+
+SQL> insert into rcall values(1,'ANIKET','11-aug-2017','present');
+
+1 row created.
+
+SQL> insert into rcall values(2,'MRIGAIS','12-aug-2017','absent');
+
+1 row created.
+
+SQL> insert into rcall values(3,'SARVESH','13-aug-2017','present');
+
+1 row created.
+
+SQL> insert into rcall values(4,'SHIVOM','14-aug-2017','absent');
+
+1 row created.
+
+SQL> select * from rcall;
+
+   ROLL_NO NAME       ATT_DATE		 ATTENDANCE
+---------- ---------- ------------------ --------------------
+	 1 ANIKET     11-AUG-17 	 present
+	 2 MRIGAIS    12-AUG-17 	 absent
+	 3 SARVESH    13-AUG-17 	 present
+	 4 SHIVOM     14-AUG-17 	 absent
+
+SQL> create table nrcall(roll_no number(10),name char(10),ATT_date date,attendance char(20));
+
+Table created.
+
+SQL> insert into nrcall values(1,'ANIKET','11-aug-2017','present');
+
+1 row created.
+
+SQL> insert into nrcall values(2,'SARVESH','12-aug-2017','absent');
+
+1 row created.
+
+SQL> insert into nrcall values(5,'SANIA','16-aug-2017','absent');
+
+1 row created.
+
+SQL> insert into nrcall values(6,'FARAH','17-aug-2017','present');
+
+1 row created.
+
+SQL> select * from nrcall;
+
+   ROLL_NO NAME       ATT_DATE		 ATTENDANCE
+---------- ---------- ------------------ --------------------
+	 1 ANIKET     11-AUG-17 	 present
+	 2 SARVESH    12-AUG-17 	 absent
+	 5 SANIA      16-AUG-17 	 absent
+	 6 FARAH      17-AUG-17 	 present
+SQL> create or replace procedure A6 as
+  2  begin
+  3  UPDATE nrcall SET ATTENDANCE='ABSENT' WHERE NAME='ANIKET';
+  4  IF SQL%FOUND THEN
+  5  dbms_output.put_line('Updated - If Found');
+  6  END IF;
+  7  IF SQL%NOTFOUND THEN
+  8  dbms_output.put_line('NOT Updated - If NOT Found');
+  9  END IF;
+ 10  IF SQL%ROWCOUNT>0 THEN
+ 11  dbms_output.put_line(SQL%ROWCOUNT||' Rows Updated');
+ 12  ELSE
+ 13  dbms_output.put_line('NO Rows Updated Found');
+ 14  END IF;
+ 15  END;
+ 16  /
+
+Procedure created.
+
+SQL> set serveroutput on
+SQL> execute A6;
+Updated - If Found
+1 Rows Updated
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from nrcall;
+
+   ROLL_NO NAME       ATT_DATE		 ATTENDANCE
+---------- ---------- ------------------ --------------------
+	 1 ANIKET     11-AUG-17 	 ABSENT
+	 2 SARVESH    12-AUG-17 	 absent
+	 5 SANIA      16-AUG-17 	 absent
+	 6 FARAH      17-AUG-17 	 present
+
+SQL> create or replace procedure P6 as
+  2  CURSOR EXPLICIT_CUR IS select roll_no,name,ATT_date from nrcall where attendance='absent';
+  3  tmp EXPLICIT_CUR %rowtype;
+  4  BEGIN
+  5  OPEN EXPLICIT_CUR;
+  6  Loop exit when EXPLICIT_CUR%NOTFOUND;
+  7  FETCH EXPLICIT_CUR into tmp;
+  8  dbms_output.put_line('roll_no :' || tmp.roll_no|| 'name : ' || tmp.name|| 'date:' || tmp.ATT_date);
+  9  END Loop;
+ 10  IF EXPLICIT_CUR%ROWCOUNT>0 THEN
+ 11  dbms_output.put_line(SQL%ROWCOUNT||' ROWS FOUND');
+ 12  ELSE
+ 13  dbms_output.put_line('NO ROWS FOUND');
+ 14  END IF;
+ 15  CLOSE EXPLICIT_CUR;
+ 16  END;
+ 17  /
+
+Procedure created.
+
+SQL> set serveroutput on
+SQL> execute P6;
+roll_no :2name : SARVESH   date:12-AUG-17
+roll_no :5name : SANIA	   date:16-AUG-17
+roll_no :5name : SANIA	   date:16-AUG-17
+ROWS FOUND
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from nrcall;
+
+   ROLL_NO NAME       ATT_DATE		 ATTENDANCE
+---------- ---------- ------------------ --------------------
+	 1 ANIKET     11-AUG-17 	 ABSENT
+	 2 SARVESH    12-AUG-17 	 absent
+	 5 SANIA      16-AUG-17 	 absent
+	 6 FARAH      17-AUG-17 	 present
+
+SQL> create or replace procedure p1 as
+  2  cursor FOR_CUR is select roll_no,name,ATT_date from nrcall where attendance='absent';
+  3  tmp FOR_CUR %rowtype;
+  4  BEGIN
+  5  FOR tmp IN FOR_CUR
+  6  LOOP
+  7  dbms_output.put_line('roll_no :' || tmp.roll_no||' '|| 'name : ' || tmp.name ||' '||'date :' || tmp.ATT_date);
+  8  END Loop;
+  9  END;
+ 10  /
+
+Procedure created.
+
+SQL> set serveroutput on
+SQL> execute p1;
+roll_no :2 name : SARVESH    date :12-AUG-17
+roll_no :5 name : SANIA      date :16-AUG-17
+
+PL/SQL procedure successfully completed.
+
+SQL> create or replace procedure P11 as
+  2  BEGIN
+  3  MERGE INTO nrcall T1 USING (SELECT roll_no, name, ATT_date,attendance FROM rcall)T2 ON (T1.roll_no = T2.roll_no) WHEN NOT MATCHED THEN INSERT VALUES(T2.roll_no,T2.name,T2.ATT_date,T2.attendance);
+  4  IF SQL%FOUND THEN
+  5  dbms_output.put_line('MERGED');
+  6  END IF;
+  7  IF SQL%NOTFOUND THEN
+  8  dbms_output.put_line('NOT MERGED');
+  9  END IF;
+ 10  IF SQL%ROWCOUNT>0 THEN
+ 11  dbms_output.put_line(SQL%ROWCOUNT||' rows merged');
+ 12  ELSE
+ 13  dbms_output.put_line('NO Rows Updated Found');
+ 14  END IF;
+ 15  END;
+ 16  /
+
+Procedure created.
+
+SQL> set serveroutput on
+SQL> execute P11;
+MERGED
+2 rows merged
+
+PL/SQL procedure successfully completed.
+
+SQL> create or replace procedure P80 as
+  2  CURSOR PARAM_CURSOR(roll number) IS SELECT * FROM nrcall WHERE roll_no = roll;
+  3  TMP PARAM_CURSOR%ROWTYPE;
+  4  BEGIN
+  5  FOR TMP IN PARAM_CURSOR(5) LOOP
+  6  dbms_output.put_line('name '||TMP.name);
+  7  dbms_output.put_line('date '||TMP.ATT_date);
+  8  dbms_output.put_line('attendance: '||TMP.attendance);
+  9  END Loop;
+ 10  END;
+ 11  /
+
+Procedure created.
+
+SQL> set serveroutput on
+SQL> execute P80;
+name SANIA
+date 16-AUG-17
+attendance: absent
+
+PL/SQL procedure successfully completed.
+
+
